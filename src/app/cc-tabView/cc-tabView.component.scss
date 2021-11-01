@@ -1,0 +1,116 @@
+$bg-color: #ebedef;
+$tab-active-color: #fff;
+$tab-active-hover-color: #f6f6f6;
+
+* {
+  font-family: quicksand, open sans, roboto, open sans, nunito, sans-serif;
+}
+
+.tab-panel {
+  background-color: $bg-color;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 10px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 5px solid $tab-active-color;
+  }
+
+  ul li {
+    position: relative;
+    flex: 1 1;
+    padding: 10px 15px;
+    z-index: 3;
+    cursor: pointer;
+  }
+
+  ul li .title-wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: 10px;
+    align-items: center;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      font-size: 13px;
+      padding: 3px 5px;
+
+      &:hover {
+        border-radius: 50%;
+        background-color: #d8d8d8;
+      }
+    }
+  }
+
+  ul li:not(.active):not(:hover):after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    bottom: 7.5px;
+    height: 10px;
+    height: calc(100% - 15px);
+    border-right: 1px solid #8d8d8d;
+  }
+
+  ul li.active {
+    position: relative;
+    background-color: $tab-active-color;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+
+  ul li:hover {
+    transition: 0.3s;
+  }
+
+  ul li:hover:not(.active) {
+    background-color: $tab-active-hover-color;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    z-index: 4;
+  }
+
+  ul li.active:after,
+  ul li.active:before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    background: $tab-active-color;
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    z-index: 1;
+  }
+
+  ul li:before {
+    right: auto;
+    left: -10px;
+  }
+
+  ul li.active .title-wrapper:after,
+  ul li.active .title-wrapper:before {
+    content: "";
+    height: 20px;
+    width: 20px;
+    background: $bg-color;
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+    z-index: 2;
+    border-radius: 50%;
+  }
+
+  ul li.active .title-wrapper:before {
+    right: auto;
+    left: -20px;
+  }
+}

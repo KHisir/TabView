@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.0/css/all.css"
+  integrity="sha384-OLYO0LymqQ+uHXELyx93kblK5YIS3B2ZfLGBmsJaUyor7CpMTBsahDHByqSuWW+q" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+
+<div class="tab-panel">
+  <ul>
+    <li class="tab" *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active" title="{{tab.title}}">
+      <div class="title-wrapper">
+        <i class="fas fa-music"></i>
+        <span>{{tab.title}}</span>
+        <i class="fas fa-times close-btn"></i>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+<ng-content></ng-content>
