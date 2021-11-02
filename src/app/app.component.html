@@ -1,16 +1,18 @@
-<app-cc-tabView>
-    <app-cc-tabPanel [title]="'Tab 1'">Tab1</app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 2 sdfdfsfs sdfsfsdfsf sdfdsfsdfsfsf'">Tab2</app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 3'">
+<app-cc-tabView [showAddTabButton]="true" [dynamicTemplate]="myDynamicTemplate" [stretchTabs]="false">
+    <app-cc-tabPanel [title]="'Tab 1'" [icon]="'fab fa-facebook-square'" [closeable]="true">I am Tab1.</app-cc-tabPanel>
+    <app-cc-tabPanel [title]="'Tab 2'" [icon]="'fab fa-twitter'" [closeable]="true">I am Tab2.</app-cc-tabPanel>
+    <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true">
         <ng-template>
-            <input type="text">
-            <textarea></textarea>
+            <h4>I am Tab3.</h4>
         </ng-template>
     </app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 4'">
+    <app-cc-tabPanel [title]="'Tab 4'" [icon]="'fab fa-instagram'" [closeable]="true">
         <ng-template>
-            <input type="text" placeholder="Hello">
-            <button>Click me</button>
+            <h2>I am Tab4.</h2>
         </ng-template>
     </app-cc-tabPanel>
 </app-cc-tabView>
+
+<ng-template #myDynamicTemplate>
+    <h2>I am a dynamic Tab.</h2>
+</ng-template>

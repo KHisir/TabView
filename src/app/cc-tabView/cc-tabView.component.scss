@@ -1,6 +1,9 @@
 $bg-color: #ebedef;
 $tab-active-color: #fff;
 $tab-active-hover-color: #f6f6f6;
+$tab-inside-button-hover-color: #d8d8d8;
+$tab-separator-color: #8d8d8d;
+$tab-width: 150px; // If stretch-tabs disabled!
 
 * {
   font-family: quicksand, open sans, roboto, open sans, nunito, sans-serif;
@@ -15,16 +18,40 @@ $tab-active-hover-color: #f6f6f6;
     padding: 10px 10px 0 10px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
     border-bottom: 5px solid $tab-active-color;
+  }
+
+  ul.stretch-tabs {
+    justify-content: space-around;
+  }
+
+  ul.stretch-tabs li {
+    flex: 1 1;
+    max-width: none !important;
   }
 
   ul li {
     position: relative;
-    flex: 1 1;
+    width: $tab-width;
     padding: 10px 15px;
     z-index: 3;
     cursor: pointer;
+  }
+
+  ul li.addTabButton {
+    flex: 0 0;
+    min-width: 30px;
+    border-radius: 50%;
+    padding: 0;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+
+    &:hover {
+      background-color: $tab-inside-button-hover-color;
+    }
   }
 
   ul li .title-wrapper {
@@ -46,19 +73,19 @@ $tab-active-hover-color: #f6f6f6;
 
       &:hover {
         border-radius: 50%;
-        background-color: #d8d8d8;
+        background-color: $tab-inside-button-hover-color;
       }
     }
   }
 
-  ul li:not(.active):not(:hover):after {
+  ul li:not(.active):not(.addTabButton):not(:hover):after {
     content: "";
     position: absolute;
     right: -1px;
     bottom: 7.5px;
     height: 10px;
     height: calc(100% - 15px);
-    border-right: 1px solid #8d8d8d;
+    border-right: 1px solid $tab-separator-color;
   }
 
   ul li.active {
@@ -68,11 +95,7 @@ $tab-active-hover-color: #f6f6f6;
     border-top-right-radius: 7px;
   }
 
-  ul li:hover {
-    transition: 0.3s;
-  }
-
-  ul li:hover:not(.active) {
+  ul li:hover:not(.active):not(.addTabButton) {
     background-color: $tab-active-hover-color;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;

@@ -12,9 +12,12 @@ export class CcTabPanelComponent implements OnInit {
   @ContentChild(TemplateRef) template!: TemplateRef<any>
   @Input() title: string = '';
   @Input() icon: string = '';
+  @Input() closeable: boolean = false;
   @Input() active: boolean = false;
+  @Input() dynamicTemplate: any;
 
   id: string = '';
+  closed: boolean = false;
 
   constructor() {
     this.id = this.createId();
