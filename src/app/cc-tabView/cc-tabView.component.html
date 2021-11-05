@@ -10,7 +10,7 @@
         <i [hidden]="tab.icon === ''" class="{{tab.icon}}"></i>
         <span>{{tab.title}}</span>
         <i *ngIf="tab.closeable === true" class="close-btn fas fa-times" (click)="$event.stopPropagation(); closeTab(tab)"></i>
-      </div>
+      </div>  
     </li>
 
     <!-- <li *ngFor="let tab of dynamicTabs">
