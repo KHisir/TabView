@@ -60,6 +60,18 @@ $tab-width: 150px; // If stretch-tabs disabled!
     grid-gap: 10px;
     align-items: center;
 
+    &.empty-title-closebtn {
+      grid-template-columns: 1fr auto;
+    }
+
+    &.icon-title-empty {
+      grid-template-columns: auto 1fr;
+    }
+
+    &.empty-title-empty {
+      grid-template-columns: 1fr;
+    }
+
     span {
       overflow: hidden;
       text-overflow: ellipsis;

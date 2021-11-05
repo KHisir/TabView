@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, ComponentFactoryResolver, forwardRef, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, ComponentFactoryResolver, EventEmitter, forwardRef, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AfterContentInit, Component, ContentChildren, OnInit, QueryList } from '@angular/core';
 import { CcTabPanelComponent } from './cc-tabPanel/cc-tabPanel.component';
 import { DynamicTabDirective } from './dynamic-tab.directive';
@@ -16,6 +16,10 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
   @Input() showAddTabButton: boolean = false;
   @Input() stretchTabs: boolean = false;
   @Input() dynamicTemplate!: TemplateRef<any>;
+
+  @Output() tabRemoved = new EventEmitter<CcTabPanelComponent>();
+  @Output() tabSelected = new EventEmitter<CcTabPanelComponent>();
+  @Output() tabAdded = new EventEmitter<CcTabPanelComponent>();
 
   @ViewChild(DynamicTabDirective) dynamicTabPlaceholder!: DynamicTabDirective;
 
@@ -42,12 +46,14 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
 
     // active the tab the user has clicked on.
     tab.active = true;
+    this.tabSelected.emit(tab);
   }
 
   closeTab(tab: CcTabPanelComponent): void {
     const notClosedTabs = this.tabs.filter((tab: CcTabPanelComponent) => tab.closed === false);
     tab.closed = true
 
+    // Close fix Tabs:
     for (let i = 0; i < notClosedTabs.length; i++) {
       if (tab.active && notClosedTabs[i].id === tab.id) {
         let nextTab = notClosedTabs[i+1];
@@ -72,19 +78,24 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
           // tab.closed = false;
           // tab.active = true;
         }
-
-        // destroy the dynamically created component!
-        // let viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
-        // for (let i = 0; i < viewContainerRef.length; i++) {
-        //   let test = viewContainerRef.element.nativeElement.id;
-        //   if (viewContainerRef.get(i)) {
-            
-        //   }
-          
-        // }
         break;
       }
     }
+
+    // Remove dynamic Tabs:
+    for (let i = 0; i < this.dynamicTabs.length; i++) {
+      if (this.dynamicTabs[i] === tab) {
+        // remove the tab from our array
+        this.dynamicTabs.splice(i, 1);
+
+        // destroy our dynamically created component again
+        let viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
+        // let viewContainerRef = this.dynamicTabPlaceholder;
+        viewContainerRef.remove(i);
+        break;
+      }
+    }
+    this.tabRemoved.emit(tab);
   }
 
   addDynamicTab(): void {
@@ -103,8 +114,12 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     instance.active = true;
     instance.closeable = true;
     instance.dynamicTemplate = this.dynamicTemplate;
+
+    // Remember the dynamic tabs in a separate list - needed for later deletion from the dome!
+    this.dynamicTabs.push(componentRef.instance as CcTabPanelComponent);
     
     this.tabs.reset([...this.tabs.toArray(), instance]);
+    this.tabAdded.emit(instance);
   }
 
 }

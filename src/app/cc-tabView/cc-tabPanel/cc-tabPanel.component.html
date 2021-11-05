@@ -1,5 +1,5 @@
-<!-- <div *ngIf="active === true"> -->
-<div [hidden]="!active">
+<div *ngIf="active === true">
+<!-- <div [hidden]="!active"> -->
   <ng-content></ng-content>
   <ng-container [ngTemplateOutlet]="template"></ng-container>
   <ng-container [ngTemplateOutlet]="dynamicTemplate"></ng-container>

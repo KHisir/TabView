@@ -6,16 +6,16 @@
 <div class="tab-panel">
   <ul [class.stretch-tabs]="stretchTabs === true">
     <li *ngFor="let tab of tabs" [hidden]="tab.closed === true" (click)="selectTab(tab)" [class.active]="tab.active" title="{{tab.title}}">
-      <div class="title-wrapper">
-        <i class="{{tab.icon}}"></i>
+      <div class="title-wrapper" [class.empty-title-closebtn]="tab.icon === '' && tab.closeable === true" [class.icon-title-empty]="tab.icon !== '' && tab.closeable === false" [class.empty-title-empty]="tab.icon === '' && tab.closeable === false">
+        <i [hidden]="tab.icon === ''" class="{{tab.icon}}"></i>
         <span>{{tab.title}}</span>
-        <i [hidden]="!tab.closeable" class="close-btn fas fa-times" (click)="$event.stopPropagation(); closeTab(tab)"></i>
+        <i *ngIf="tab.closeable === true" class="close-btn fas fa-times" (click)="$event.stopPropagation(); closeTab(tab)"></i>
       </div>
     </li>
 
-    <li *ngFor="let tab of dynamicTabs">
+    <!-- <li *ngFor="let tab of dynamicTabs">
       <span>New Tab</span>
-    </li>
+    </li> -->
 
     <li [hidden]="!showAddTabButton" (click)="addDynamicTab()" class="addTabButton">
       <i class="fas fa-plus"></i>
