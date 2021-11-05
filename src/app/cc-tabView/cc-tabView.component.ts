@@ -50,39 +50,44 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
   }
 
   closeTab(tab: CcTabPanelComponent): void {
-    const notClosedTabs = this.tabs.filter((tab: CcTabPanelComponent) => tab.closed === false);
     tab.closed = true
 
     // Close fix Tabs:
-    for (let i = 0; i < notClosedTabs.length; i++) {
-      if (tab.active && notClosedTabs[i].id === tab.id) {
-        let nextTab = notClosedTabs[i+1];
-        let prevTab = notClosedTabs[i-1];
-        if (nextTab !== undefined) {
-          if (!nextTab.closed) {
-            tab.active = false;
-            this.selectTab(nextTab);
+    for (let i = 0; i < this.tabs.length; i++) {
+      const item = this.tabs.get(i);
+      if (item !== undefined) {
+        if (tab.active && item.id === tab.id) {
+          let nextTab = this.tabs.get(i+1);
+          let prevTab = this.tabs.get(i-1);
+          if (nextTab !== undefined) {
+            if (!nextTab.closed) {
+              tab.active = false;
+              this.selectTab(nextTab);
+            } else {
+              continue;
+            }
+          } else if (prevTab !== undefined) {
+            if (!prevTab.closed) {
+              tab.active = false;
+              this.selectTab(prevTab);
+            } else {
+              continue;
+            }
           } else {
-            continue;
-          }
-        } else if (prevTab !== undefined) {
-          if (!prevTab.closed) {
             tab.active = false;
-            this.selectTab(prevTab);
-          } else {
-            continue;
+            // Todo - If only a tab! For example, prevent delete:
+            // tab.closed = false;
+            // tab.active = true;
           }
-        } else {
-          tab.active = false;
-          // Todo - If only a tab! For example, prevent delete:
-          // tab.closed = false;
-          // tab.active = true;
+          break;
         }
-        break;
       }
     }
 
-    // Remove dynamic Tabs:
+    const notClosedTabs = this.tabs.filter((tab: CcTabPanelComponent) => tab.closed === false);
+    this.tabs.reset([...notClosedTabs]);
+
+    // remove/destroy dynamically created component:
     for (let i = 0; i < this.dynamicTabs.length; i++) {
       if (this.dynamicTabs[i] === tab) {
         // remove the tab from our array

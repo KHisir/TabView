@@ -21,6 +21,10 @@ $tab-width: 150px; // If stretch-tabs disabled!
     border-bottom: 5px solid $tab-active-color;
   }
 
+  ul.only-addbtn {
+    padding-bottom: 10px;
+  }
+
   ul.stretch-tabs {
     justify-content: space-around;
   }
