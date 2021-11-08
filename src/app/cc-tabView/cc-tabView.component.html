@@ -13,11 +13,7 @@
       </div>  
     </li>
 
-    <!-- <li *ngFor="let tab of dynamicTabs">
-      <span>New Tab</span>
-    </li> -->
-
-    <li [hidden]="!showAddTabButton" (click)="addDynamicTab()" class="addTabButton">
+    <li *ngIf="showAddTabButton === true" (click)="addDynamicTab()" class="addTabButton">
       <i class="fas fa-plus"></i>
     </li>
   </ul>

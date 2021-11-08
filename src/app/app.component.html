@@ -1,18 +1,47 @@
-<app-cc-tabView [showAddTabButton]="true" [dynamicTemplate]="myDynamicTemplate" [stretchTabs]="false" (tabAdded)="tabAdded($event)" (tabSelected)="tabSelected($event)" (tabRemoved)="tabRemoved($event)">
-    <app-cc-tabPanel [title]="'Tab 1'" [icon]="'fab fa-facebook-square'" [closeable]="true"><h4>I am Tab1.</h4></app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 2'" [icon]="'fab fa-twitter'" [closeable]="true"><h3>I am Tab2.</h3></app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true">
-        <ng-template>
-            <h2>I am Tab3.</h2>
-        </ng-template>
-    </app-cc-tabPanel>
-    <app-cc-tabPanel [title]="'Tab 4'" [icon]="'fab fa-instagram'" [closeable]="true">
-        <ng-template>
-            <h1>I am Tab4.</h1>
-        </ng-template>
-    </app-cc-tabPanel>
-</app-cc-tabView>
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
 
 <ng-template #myDynamicTemplate>
     <h1>I am a dynamic Tab.</h1>
 </ng-template>
+
+<p>Fixed Tabs:</p>
+<div class="example">
+    <app-cc-tabView [stretchTabs]="false" (tabAdded)="tabAdded($event)" (tabSelected)="tabSelected($event)" (tabRemoved)="tabRemoved($event)">
+        <app-cc-tabPanel [title]="'Tab 1'" [icon]="'fab fa-facebook-square'" [closeable]="true"><h4>I am Tab1.</h4></app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 2'" [icon]="'fab fa-twitter'" [closeable]="true"><h3>I am Tab2.</h3></app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true">
+            <ng-template>
+                <h2>I am Tab3.</h2>
+            </ng-template>
+        </app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 4'" [icon]="'fab fa-instagram'" [closeable]="true">
+            <ng-template>
+                <h1>I am Tab4.</h1>
+            </ng-template>
+        </app-cc-tabPanel>
+    </app-cc-tabView>
+</div>
+
+<p>Dynamically Tabs:</p>
+<div class="example">
+    <app-cc-tabView [showAddTabButton]="true" [dynamicTemplate]="myDynamicTemplate" [stretchTabs]="false" (tabAdded)="tabAdded($event)" (tabSelected)="tabSelected($event)" (tabRemoved)="tabRemoved($event)">
+    </app-cc-tabView>
+</div>
+
+<p>Fixed & Dynamically Tabs:</p>
+<div class="example">
+    <app-cc-tabView [showAddTabButton]="true" [dynamicTemplate]="myDynamicTemplate" [stretchTabs]="false" (tabAdded)="tabAdded($event)" (tabSelected)="tabSelected($event)" (tabRemoved)="tabRemoved($event)">
+        <app-cc-tabPanel [title]="'Tab 1'" [icon]="'fab fa-facebook-square'" [closeable]="true"><h4>I am Tab1.</h4></app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 2'" [icon]="'fab fa-twitter'" [closeable]="true"><h3>I am Tab2.</h3></app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true">
+            <ng-template>
+                <h2>I am Tab3.</h2>
+            </ng-template>
+        </app-cc-tabPanel>
+        <app-cc-tabPanel [title]="'Tab 4'" [icon]="'fab fa-instagram'" [closeable]="true">
+            <ng-template>
+                <h1>I am Tab4.</h1>
+            </ng-template>
+        </app-cc-tabPanel>
+    </app-cc-tabView>
+</div>

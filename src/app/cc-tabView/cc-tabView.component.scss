@@ -16,7 +16,11 @@ $tab-width: 150px; // If stretch-tabs disabled!
     list-style-type: none;
     margin: 0;
     padding: 10px 10px 0 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     border-bottom: 5px solid $tab-active-color;
   }
@@ -26,10 +30,13 @@ $tab-width: 150px; // If stretch-tabs disabled!
   }
 
   ul.stretch-tabs {
+    -ms-flex-pack: distribute;
     justify-content: space-around;
   }
 
   ul.stretch-tabs li {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1;
     flex: 1 1;
     max-width: none !important;
   }
@@ -43,13 +50,21 @@ $tab-width: 150px; // If stretch-tabs disabled!
   }
 
   ul li.addTabButton {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0;
     flex: 0 0;
     min-width: 30px;
     border-radius: 50%;
     padding: 0;
     min-height: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     margin-left: 10px;
 
@@ -59,25 +74,33 @@ $tab-width: 150px; // If stretch-tabs disabled!
   }
 
   ul li .title-wrapper {
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: auto 10px 1fr 10px auto;
     grid-template-columns: auto 1fr auto;
     grid-gap: 10px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 
     &.empty-title-closebtn {
+      -ms-grid-columns: 1fr auto;
       grid-template-columns: 1fr auto;
     }
 
     &.icon-title-empty {
+      -ms-grid-columns: auto 1fr;
       grid-template-columns: auto 1fr;
     }
 
     &.empty-title-empty {
+      -ms-grid-columns: 1fr;
       grid-template-columns: 1fr;
     }
 
     span {
       overflow: hidden;
+      -o-text-overflow: ellipsis;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -148,8 +171,17 @@ $tab-width: 150px; // If stretch-tabs disabled!
     border-radius: 50%;
   }
 
+  ul li.active:first-child .title-wrapper:before {
+    width: 10px;
+  }
+
   ul li.active .title-wrapper:before {
     right: auto;
     left: -20px;
+  }
+
+  ul li.active:first-child .title-wrapper:before {
+    border-radius: 0 50% 50% 0;
+    left: -10px;
   }
 }
