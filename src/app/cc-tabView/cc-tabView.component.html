@@ -5,7 +5,7 @@
 
 <div class="tab-panel">
   <ul [class.stretch-tabs]="stretchTabs === true" [class.only-addbtn]="tabs.length === 0">
-    <li *ngFor="let tab of tabs" [hidden]="tab.closed === true" (click)="selectTab(tab)" [class.active]="tab.active" title="{{tab.title}}">
+    <li *ngFor="let tab of tabs" [hidden]="tab.closed === true" (click)="selectTab(tab)" [class.disabled]="tab.disabled" [class.active]="tab.active" title="{{tab.title}}">
       <div class="title-wrapper" [class.empty-title-closebtn]="tab.icon === '' && tab.closeable === true" [class.icon-title-empty]="tab.icon !== '' && tab.closeable === false" [class.empty-title-empty]="tab.icon === '' && tab.closeable === false">
         <i [hidden]="tab.icon === ''" class="{{tab.icon}}"></i>
         <span>{{tab.title}}</span>

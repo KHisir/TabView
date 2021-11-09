@@ -1,6 +1,10 @@
-# CcTabs
+# CcTabView
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
+
+# Documentation & Preview
+
+https://componentcollection.com/cc-components/TabView%28DynamicTabs%29
 
 ## Development server
 

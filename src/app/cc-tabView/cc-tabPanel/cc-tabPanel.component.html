@@ -1,4 +1,4 @@
-<div *ngIf="active === true">
+<div *ngIf="active === true && !disabled">
 <!-- <div [hidden]="!active"> -->
   <ng-content></ng-content>
   <ng-container [ngTemplateOutlet]="template"></ng-container>

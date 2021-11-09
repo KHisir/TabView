@@ -51,38 +51,41 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
 
   closeTab(tab: CcTabPanelComponent): void {
     tab.closed = true
+    tab.active = false;
+
+    const nextSelectedTab: CcTabPanelComponent = this.getAfterClosingNextSelectedTab(tab);
 
     // Close fix Tabs:
-    for (let i = 0; i < this.tabs.length; i++) {
-      const item = this.tabs.get(i);
-      if (item !== undefined) {
-        if (tab.active && item.id === tab.id) {
-          let nextTab = this.tabs.get(i+1);
-          let prevTab = this.tabs.get(i-1);
-          if (nextTab !== undefined) {
-            if (!nextTab.closed) {
-              tab.active = false;
-              this.selectTab(nextTab);
-            } else {
-              continue;
-            }
-          } else if (prevTab !== undefined) {
-            if (!prevTab.closed) {
-              tab.active = false;
-              this.selectTab(prevTab);
-            } else {
-              continue;
-            }
-          } else {
-            tab.active = false;
-            // Todo - If only a tab! For example, prevent delete:
-            // tab.closed = false;
-            // tab.active = true;
-          }
-          break;
-        }
-      }
-    }
+    // for (let i = 0; i < this.tabs.length; i++) {
+    //   const item = this.tabs.get(i);
+    //   if (item !== undefined) {
+    //     if (tab.active && item.id === tab.id) {
+    //       let nextTab = this.tabs.get(i+1);
+    //       let prevTab = this.tabs.get(i-1);
+    //       if (nextTab !== undefined) {
+    //         if (!nextTab.closed && !nextTab.disabled) {
+    //           tab.active = false;
+    //           this.selectTab(nextTab);
+    //         } else {
+    //           continue;
+    //         }
+    //       } else if (prevTab !== undefined) {
+    //         if (!prevTab.closed && !prevTab.disabled) {
+    //           tab.active = false;
+    //           this.selectTab(prevTab);
+    //         } else {
+    //           continue;
+    //         }
+    //       } else {
+    //         tab.active = false;
+    //         // Todo - If only a tab! For example, prevent delete:
+    //         // tab.closed = false;
+    //         // tab.active = true;
+    //       }
+    //       break;
+    //     }
+    //   }
+    // }
 
     const notClosedTabs = this.tabs.filter((tab: CcTabPanelComponent) => tab.closed === false);
     this.tabs.reset([...notClosedTabs]);
@@ -100,7 +103,12 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
         break;
       }
     }
+
     this.tabRemoved.emit(tab);
+
+    if (nextSelectedTab !== undefined) {
+      this.selectTab(nextSelectedTab);
+    }
   }
 
   addDynamicTab(): void {
@@ -125,6 +133,44 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     
     this.tabs.reset([...this.tabs.toArray(), instance]);
     this.tabAdded.emit(instance);
+  }
+
+  getAfterClosingNextSelectedTab(closedTab: CcTabPanelComponent): any {
+    const currentTabIndex = this.tabs.toArray().findIndex(x => x.id === closedTab.id);
+    let nextTab;
+
+    const activeTab = this.tabs.find((tab: CcTabPanelComponent) => tab.active === true);
+    if (activeTab !== undefined) {
+      if (closedTab.id !== activeTab.id) {
+        return nextTab
+      }
+    }
+
+    for (let i = currentTabIndex; i < this.tabs.length; i++) {
+      nextTab = this.tabs.get(i+1);
+      if (nextTab !== undefined) {
+        if (nextTab.closed || nextTab.disabled) {
+          continue;
+        } else {
+          break;
+        }
+      }
+    }
+
+    if (nextTab === undefined) {
+      for (let i = currentTabIndex; i >= 0; i--) {
+        nextTab = this.tabs.get(i-1);
+        if (nextTab !== undefined) {
+          if (nextTab.closed || nextTab.disabled) {
+            continue;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    return nextTab;
   }
 
 }

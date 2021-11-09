@@ -33,7 +33,7 @@
     <app-cc-tabView [showAddTabButton]="true" [dynamicTemplate]="myDynamicTemplate" [stretchTabs]="false" (tabAdded)="tabAdded($event)" (tabSelected)="tabSelected($event)" (tabRemoved)="tabRemoved($event)">
         <app-cc-tabPanel [title]="'Tab 1'" [icon]="'fab fa-facebook-square'" [closeable]="true"><h4>I am Tab1.</h4></app-cc-tabPanel>
         <app-cc-tabPanel [title]="'Tab 2'" [icon]="'fab fa-twitter'" [closeable]="true"><h3>I am Tab2.</h3></app-cc-tabPanel>
-        <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true">
+        <app-cc-tabPanel [title]="'Tab 3'" [icon]="'fab fa-whatsapp'" [closeable]="true" [disabled]="true">
             <ng-template>
                 <h2>I am Tab3.</h2>
             </ng-template>

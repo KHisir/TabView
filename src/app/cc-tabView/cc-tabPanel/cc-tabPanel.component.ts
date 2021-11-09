@@ -13,6 +13,7 @@ export class CcTabPanelComponent implements OnInit {
   @Input() title: string = '';
   @Input() icon: string = '';
   @Input() closeable: boolean = false;
+  @Input() disabled: boolean = false;
   @Input() active: boolean = false;
   @Input() dynamicTemplate: any;
 
