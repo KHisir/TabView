@@ -1,9 +1,11 @@
+$primary-color: #ff4a85;
+$secondary-color: #fff;
 $bg-color: #ebedef;
 $tab-active-color: #fff;
 $tab-active-hover-color: #f6f6f6;
 $tab-inside-button-hover-color: #d8d8d8;
 $tab-separator-color: #8d8d8d;
-$tab-width: 150px; // If stretch-tabs disabled!
+// $tab-width: 150px; // If stretch-tabs disabled!
 
 * {
   font-family: quicksand, open sans, roboto, open sans, nunito, sans-serif;
@@ -11,6 +13,7 @@ $tab-width: 150px; // If stretch-tabs disabled!
 
 .tab-panel {
   background-color: $bg-color;
+  min-width: 290px;
 
   ul {
     list-style-type: none;
@@ -43,7 +46,7 @@ $tab-width: 150px; // If stretch-tabs disabled!
 
   ul li {
     position: relative;
-    width: $tab-width;
+    // width: $tab-width;
     padding: 10px 15px;
     z-index: 3;
     cursor: pointer;
@@ -127,14 +130,17 @@ $tab-width: 150px; // If stretch-tabs disabled!
     border-right: 1px solid $tab-separator-color;
   }
 
-  ul li.disabled {
+  ul li.disabled, ul li a.disabled {
     pointer-events: none;
     cursor: not-allowed;
     opacity: .3;
   }
 
+  ul li.hide, ul li a.hide {
+    display: none;
+  }
+
   ul li.active {
-    position: relative;
     background-color: $tab-active-color;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -189,5 +195,74 @@ $tab-width: 150px; // If stretch-tabs disabled!
   ul li.active:first-child .title-wrapper:before {
     border-radius: 0 50% 50% 0;
     left: -10px;
+  }
+
+  .cc-dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    inset: 0px 0px auto auto;
+    margin: 0px;
+    -webkit-transform: translate3d(0px, 40px, 0px);
+    transform: translate3d(0px, 40px, 0px);
+    z-index: 1000;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    max-height: 135px;
+    overflow-y: auto;
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    a {
+      position: relative;
+      display: block;
+      text-align: left;
+      padding: 7.5px;
+      cursor: pointer;
+      font-weight: normal;
+      &:hover {
+        font-weight: bold;
+      }
+
+      &.active {
+        font-weight: bold;
+      }
+
+      .title-wrapper {
+        margin: 2.5px 0;
+      }
+    }
+  }
+
+  .cc-badge {
+    border-radius: 50rem;
+    background-color: $primary-color;
+    color: $secondary-color;
+
+    position: absolute;
+    right: 0;
+    top: -8px;
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    margin-right: 2px;
+
+    &.hide {
+      display: none;
+    }
   }
 }

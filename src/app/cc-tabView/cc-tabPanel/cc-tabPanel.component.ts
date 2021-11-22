@@ -12,6 +12,7 @@ export class CcTabPanelComponent implements OnInit {
   @ContentChild(TemplateRef) template!: TemplateRef<any>
   @Input() title: string = '';
   @Input() icon: string = '';
+  @Input() badge: string = '';
   @Input() closeable: boolean = false;
   @Input() disabled: boolean = false;
   @Input() active: boolean = false;
@@ -19,6 +20,7 @@ export class CcTabPanelComponent implements OnInit {
 
   id: string = '';
   closed: boolean = false;
+  dropdownTab: boolean = false
 
   constructor() {
     this.id = this.createId();

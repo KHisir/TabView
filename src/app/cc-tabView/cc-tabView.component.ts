@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, ComponentFactoryResolver, EventEmitter, forwardRef, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { AfterContentInit, Component, ContentChildren, OnInit, QueryList } from '@angular/core';
 import { CcTabPanelComponent } from './cc-tabPanel/cc-tabPanel.component';
 import { DynamicTabDirective } from './dynamic-tab.directive';
@@ -8,9 +8,13 @@ import { DynamicTabDirective } from './dynamic-tab.directive';
   templateUrl: './cc-tabView.component.html',
   styleUrls: ['./cc-tabView.component.scss']
 })
-export class CcTabViewComponent implements OnInit, AfterContentInit {
+export class CcTabViewComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   @ContentChildren(CcTabPanelComponent) tabs!: QueryList<CcTabPanelComponent>
   dynamicTabs: CcTabPanelComponent[] = [];
+  tabWidth: number = 150;
+  dropdownIsOpen: boolean = false;
+  dropdownItemElem?: HTMLElement;
+  observer?: ResizeObserver;
   // @ContentChildren(forwardRef(() => CcTabPanelComponent)) tabs;
 
   @Input() showAddTabButton: boolean = false;
@@ -22,8 +26,18 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
   @Output() tabAdded = new EventEmitter<CcTabPanelComponent>();
 
   @ViewChild(DynamicTabDirective) dynamicTabPlaceholder!: DynamicTabDirective;
+  @ViewChild("tabPanel") tabPanelElem?: ElementRef;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  @HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    if (this.dropdownItemElem !== undefined) {
+      this.dropdownItemElem = undefined;
+    } else {
+      this.dropdownIsOpen = false;
+    }
+  }
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
@@ -40,13 +54,33 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.observer = new ResizeObserver(entries => {
+      this.foldUpExcess();
+    });
+
+    if (this.tabPanelElem !== undefined && this.observer !== undefined) {
+      this.observer.observe(this.tabPanelElem.nativeElement);
+    }
+
+    this.foldUpExcess();
+  }
+
+  ngOnDestroy() {
+    if (this.tabPanelElem !== undefined && this.observer !== undefined) {
+      this.observer.unobserve(this.tabPanelElem.nativeElement);
+    }
+  }
+
   selectTab(tab: CcTabPanelComponent): void {
     // deactive all tabs
     this.tabs.toArray().forEach((tab: CcTabPanelComponent) => tab.active = false);
 
     // active the tab the user has clicked on.
-    tab.active = true;
-    this.tabSelected.emit(tab);
+    if (tab !== undefined) {
+      tab.active = true;
+      this.tabSelected.emit(tab);
+    }
   }
 
   closeTab(tab: CcTabPanelComponent): void {
@@ -54,38 +88,6 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     tab.active = false;
 
     const nextSelectedTab: CcTabPanelComponent = this.getAfterClosingNextSelectedTab(tab);
-
-    // Close fix Tabs:
-    // for (let i = 0; i < this.tabs.length; i++) {
-    //   const item = this.tabs.get(i);
-    //   if (item !== undefined) {
-    //     if (tab.active && item.id === tab.id) {
-    //       let nextTab = this.tabs.get(i+1);
-    //       let prevTab = this.tabs.get(i-1);
-    //       if (nextTab !== undefined) {
-    //         if (!nextTab.closed && !nextTab.disabled) {
-    //           tab.active = false;
-    //           this.selectTab(nextTab);
-    //         } else {
-    //           continue;
-    //         }
-    //       } else if (prevTab !== undefined) {
-    //         if (!prevTab.closed && !prevTab.disabled) {
-    //           tab.active = false;
-    //           this.selectTab(prevTab);
-    //         } else {
-    //           continue;
-    //         }
-    //       } else {
-    //         tab.active = false;
-    //         // Todo - If only a tab! For example, prevent delete:
-    //         // tab.closed = false;
-    //         // tab.active = true;
-    //       }
-    //       break;
-    //     }
-    //   }
-    // }
 
     const notClosedTabs = this.tabs.filter((tab: CcTabPanelComponent) => tab.closed === false);
     this.tabs.reset([...notClosedTabs]);
@@ -109,6 +111,8 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     if (nextSelectedTab !== undefined) {
       this.selectTab(nextSelectedTab);
     }
+
+    this.foldUpExcess();
   }
 
   addDynamicTab(): void {
@@ -133,6 +137,8 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     
     this.tabs.reset([...this.tabs.toArray(), instance]);
     this.tabAdded.emit(instance);
+
+    this.foldUpExcess();
   }
 
   getAfterClosingNextSelectedTab(closedTab: CcTabPanelComponent): any {
@@ -171,6 +177,51 @@ export class CcTabViewComponent implements OnInit, AfterContentInit {
     }
 
     return nextTab;
+  }
+
+  foldUpExcess(): void {
+    if (this.tabPanelElem !== undefined) {
+      let addBtnWidth: number = 0;
+
+      if (this.showAddTabButton === true) {
+        addBtnWidth = 30;
+      }
+
+      if (((this.tabs.length * this.tabWidth) + addBtnWidth) > this.tabPanelElem.nativeElement.offsetWidth) {
+        const maxCountOfDisplays: number = Math.floor((this.tabPanelElem.nativeElement.offsetWidth) / this.tabWidth);
+        
+        for (let i = 0; i < this.tabs.length; i++) {
+          const tab = this.tabs.get(i);
+
+          if (tab !== undefined) {
+            tab.dropdownTab = false;
+            if (i >= maxCountOfDisplays) {
+              tab.dropdownTab = true;
+            }
+          }
+        }
+      } else {
+        this.tabs.toArray().forEach((tab: CcTabPanelComponent) => tab.dropdownTab = false);
+      }
+      this.cdr.detectChanges();
+    }
+  }
+
+  dropdownOnClick(elem?: HTMLElement): void {
+    this.dropdownIsOpen = !this.dropdownIsOpen;
+    this.dropdownItemElem = this.dropdownIsOpen === true ? elem : undefined;
+  }
+
+  getTabWidth(): string {
+    if (!this.stretchTabs) {
+      return this.tabWidth + 'px';
+    } else {
+      return 'auto';
+    }
+  }
+
+  tabCountInDropdown(): number {
+    return this.tabs.filter((tab: CcTabPanelComponent) => tab.dropdownTab === true).length;
   }
 
 }
