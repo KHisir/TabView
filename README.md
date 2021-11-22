@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![Angular](https://img.shields.io/badge/%3C%2F%3E-Angular-red.svg)](https://angular.io/)
-[![SCSS](https://img.shields.io/badge/%3C%2F%3E-Angular-%23ff69b4.svg)](https://angular.io/)
+[![SCSS](https://img.shields.io/badge/%3C%2F%3E-SCSS-%23ff69b4.svg)](https://sass-lang.com/)
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
